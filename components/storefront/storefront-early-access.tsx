@@ -1,14 +1,18 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
+import type { SubscribeResult } from "@/actions/newsletter/subscribe-action"
 
 export interface StorefrontEarlyAccessProps {
   storefrontName: string
   theme?: "minimal"
+  /** Server action bound with the storefront's ID — receives only the email. */
+  onSubscribe: (email: string) => Promise<SubscribeResult>
 }
 
 export function StorefrontEarlyAccess({
   storefrontName,
+  onSubscribe,
 }: StorefrontEarlyAccessProps) {
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
@@ -28,10 +32,15 @@ export function StorefrontEarlyAccess({
     setError("")
     setLoading(true)
 
-    // Simulate async request
-    await new Promise((r) => setTimeout(r, 800))
+    const result = await onSubscribe(email)
 
     setLoading(false)
+
+    if (!result.success) {
+      setError(result.error)
+      return
+    }
+
     setSubmitted(true)
   }
 
