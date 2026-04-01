@@ -6,7 +6,7 @@ import { subscribeToNewsletter } from "@/actions/newsletter/subscribe-action"
 const STOREFRONT_ID = "88af01b7-1719-4420-bfba-ed2075ba0686"
 
 export const metadata: Metadata = {
-  title: "Einheitlich — Private Access",
+  title: "EINHEITLICH — Private Access",
   description: "Access reserved for early collectors. Launching soon.",
 }
 
