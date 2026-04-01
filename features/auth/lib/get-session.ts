@@ -155,7 +155,7 @@ function normalizeUserReference(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 6. HELPER — normalize AuthProfile from raw DB row
-// ─────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────���──────────────────────────────
 
 function normalizeProfile(raw: RawProfile): AuthProfile {
   return {
@@ -222,7 +222,28 @@ function normalizeAuthenticatedCustomer(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 9. HELPER — fetch profile row for the authenticated user
+// 9. TYPE GUARD — narrow unknown Supabase data to RawCustomer
+//
+// Validates the minimum set of required fields that unambiguously identify a
+// real customer record. Returns false (→ null) for GenericStringError and any
+// other incompatible shape so callers never receive a force-cast bad value.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function isRawCustomer(value: unknown): value is RawCustomer {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.id === "string" &&
+    typeof v.storefront_id === "string" &&
+    (v.distributor_id === null || typeof v.distributor_id === "string") &&
+    typeof v.first_name === "string" &&
+    typeof v.last_name === "string" &&
+    typeof v.email === "string"
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 10 (was 9). HELPER — fetch profile row for the authenticated user
 //
 // Guaranteed: profile.user_id === authUserId when found.
 // Not guaranteed: a profile row exists for every auth user.
@@ -305,7 +326,8 @@ async function resolveCustomer(
       return null;
     }
 
-    if (data) return data as RawCustomer;
+    if (isRawCustomer(data)) return data;
+    return null;
   }
 
   // Path B: email-only fallback (may match across storefronts — take most recent)
@@ -322,7 +344,7 @@ async function resolveCustomer(
     return null;
   }
 
-  return (data as RawCustomer) ?? null;
+  return isRawCustomer(data) ? data : null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -350,7 +372,7 @@ function deriveStorefrontRole(
 //
 // Returns one normalized AuthSession. Never throws to callers — errors are
 // captured and surfaced as identityState: "error" or graceful partial sessions.
-// ─────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────���──────────────────────────────
 
 export async function getSession(
   input?: GetSessionInput
