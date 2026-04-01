@@ -1,5 +1,9 @@
 -- Migration: create newsletter_subscribers table
--- Multi-storefront aware: each row is scoped to a storefront_id
+-- Run this in the Supabase SQL editor:
+-- https://app.supabase.com/project/stkxepioooqhzdakxzhw/sql
+--
+-- Multi-storefront aware: every row is scoped to a storefront_id so
+-- subscribers from different storefronts are cleanly separated.
 
 create table if not exists public.newsletter_subscribers (
   id             uuid primary key default gen_random_uuid(),
@@ -10,14 +14,27 @@ create table if not exists public.newsletter_subscribers (
   created_at     timestamp with time zone not null default now(),
   updated_at     timestamp with time zone not null default now(),
 
-  -- Prevent duplicate emails per storefront
+  -- prevent duplicate signups per storefront
   constraint newsletter_subscribers_email_storefront_unique unique (email, storefront_id)
 );
 
--- Index for fast lookups by storefront
+-- fast lookups filtered by storefront
 create index if not exists newsletter_subscribers_storefront_id_idx
   on public.newsletter_subscribers (storefront_id);
 
--- Index for fast lookups by email
+-- fast lookups by email (e.g. unsubscribe flows)
 create index if not exists newsletter_subscribers_email_idx
   on public.newsletter_subscribers (email);
+
+-- auto-bump updated_at on any row change
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+create trigger newsletter_subscribers_set_updated_at
+  before update on public.newsletter_subscribers
+  for each row execute procedure public.set_updated_at();
