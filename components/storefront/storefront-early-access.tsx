@@ -43,44 +43,31 @@ export function StorefrontEarlyAccess({
   }
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[var(--color-background)]">
-
-      {/* ── Video background ── */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/bg-roses.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden="true"
-      />
-
-      {/* ── Scrim ── */}
-      <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
+    <main className="min-h-screen w-full bg-[var(--color-background)]">
 
       {/* ── Viewport grid ── */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
+      <div className="min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
 
         {/* TOP ROW — brand + status */}
         <header className="flex items-start justify-between">
+          <span
+            className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
+            aria-label="Private Access"
+          >
+            Private Access
+          </span>
           <span
             className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
             aria-label={`Storefront: ${storefrontName}`}
           >
             {storefrontName}
           </span>
-          <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
-            {submitted ? "Access registered." : "Access restricted."}
-          </span>
         </header>
 
         {/* MIDDLE — large display headline, full width */}
         <div className="flex-1 flex items-center">
           <h1 className="font-display text-[clamp(4.5rem,14vw,14rem)] leading-[0.9] tracking-tight text-[var(--color-foreground)] select-none pointer-events-none">
-            PRIVATE
-            <br />
-            ACCESS
+            {storefrontName}
           </h1>
         </div>
 
