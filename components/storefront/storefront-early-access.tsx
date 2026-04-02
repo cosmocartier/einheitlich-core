@@ -45,8 +45,24 @@ export function StorefrontEarlyAccess({
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6 bg-[var(--color-background)]">
-      <div className="w-full max-w-sm flex flex-col items-center text-center gap-10">
+    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[var(--color-background)]">
+
+      {/* Full-viewport looping video background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/bg-roses.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+      />
+
+      {/* Dark scrim so text stays legible over the video */}
+      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+
+      {/* Foreground content */}
+      <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center gap-10">
 
         {/* Brand label */}
         <p
