@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import { Cormorant } from "next/font/google"
+import { Julius_Sans_One } from "next/font/google"
 import "./globals.css"
 
 const inter = Inter({
@@ -13,6 +14,12 @@ const cormorant = Cormorant({
   subsets: ["latin"],
   variable: "--font-cormorant",
   weight: ["300", "400", "500", "600"],
+})
+
+const juliusSansOne = Julius_Sans_One({
+  subsets: ["latin"],
+  variable: "--font-julius",
+  weight: "400",
 })
 
 export const metadata: Metadata = {
@@ -28,7 +35,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${juliusSansOne.variable}`}>
       <body>{children}</body>
     </html>
   )

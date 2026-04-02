@@ -11,6 +11,7 @@
   /* Typography */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-display: var(--font-julius), ui-sans-serif, sans-serif;
 
   /* Radius — zero for editorial feel */
   --radius: 0rem;

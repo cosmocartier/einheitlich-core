@@ -25,15 +25,13 @@ export function StorefrontEarlyAccess({
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      setError("Enter a valid email address.")
+      setError("Invalid address.")
       return
     }
 
     setError("")
     setLoading(true)
-
     const result = await onSubscribe(email)
-
     setLoading(false)
 
     if (!result.success) {
@@ -45,9 +43,9 @@ export function StorefrontEarlyAccess({
   }
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-[var(--color-background)]">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[var(--color-background)]">
 
-      {/* Full-viewport looping video background */}
+      {/* ── Video background ── */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
         src="/videos/bg-roses.mp4"
@@ -58,46 +56,75 @@ export function StorefrontEarlyAccess({
         aria-hidden="true"
       />
 
-      {/* Dark scrim so text stays legible over the video */}
-      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+      {/* ── Scrim ── */}
+      <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
 
-      {/* Foreground content */}
-      <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center gap-10">
+      {/* ── Viewport grid ── */}
+      <div className="relative z-10 min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
 
-        {/* Brand label */}
-        <p
-          className="text-[10px] font-sans tracking-[0.35em] uppercase text-[var(--color-muted)]"
-          aria-label={`Storefront: ${storefrontName}`}
-        >
-          {storefrontName}
-        </p>
+        {/* TOP ROW — brand + status */}
+        <header className="flex items-start justify-between">
+          <span
+            className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
+            aria-label={`Storefront: ${storefrontName}`}
+          >
+            {storefrontName}
+          </span>
+          <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
+            {submitted ? "Access registered." : "Access restricted."}
+          </span>
+        </header>
 
-        {submitted ? (
-          <SuccessState />
-        ) : (
-          <AccessForm
-            email={email}
-            error={error}
-            loading={loading}
-            onEmailChange={setEmail}
-            onSubmit={handleSubmit}
-          />
-        )}
+        {/* MIDDLE — large display headline, full width */}
+        <div className="flex-1 flex items-center">
+          <h1 className="font-display text-[clamp(4.5rem,14vw,14rem)] leading-[0.9] tracking-tight text-[var(--color-foreground)] select-none pointer-events-none">
+            PRIVATE
+            <br />
+            ACCESS
+          </h1>
+        </div>
+
+        {/* BOTTOM ROW — form left, descriptor right */}
+        <footer className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+
+          {submitted ? (
+            <SuccessState />
+          ) : (
+            <AccessForm
+              email={email}
+              error={error}
+              loading={loading}
+              onEmailChange={setEmail}
+              onSubmit={handleSubmit}
+            />
+          )}
+
+          {/* Right-aligned descriptor block */}
+          <div className="flex flex-col gap-1 md:items-end md:text-right shrink-0">
+            <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
+              Early collectors only
+            </p>
+            <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
+              Invitations issued privately
+            </p>
+          </div>
+
+        </footer>
       </div>
     </main>
   )
 }
 
-/* ---------- Sub-components ---------- */
+/* ── Sub-components ── */
 
 function SuccessState() {
   return (
-    <div className="flex flex-col items-center gap-6 animate-fade-in">
-      <h1 className="font-serif text-4xl sm:text-5xl font-light text-[var(--color-foreground)] leading-tight tracking-tight text-balance">
-        Access requested.
-      </h1>
-      <p className="font-sans text-sm leading-relaxed text-[var(--color-muted)] tracking-wide">
-        {"You'll receive a private invitation."}
+    <div className="flex flex-col gap-3 animate-fade-in max-w-xs">
+      <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-muted)]">
+        Confirmed
+      </p>
+      <p className="font-sans text-sm leading-relaxed text-[var(--color-foreground)]">
+        {"You'll receive a private invitation when access opens."}
       </p>
     </div>
   )
@@ -111,92 +138,68 @@ interface AccessFormProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-function AccessForm({
-  email,
-  error,
-  loading,
-  onEmailChange,
-  onSubmit,
-}: AccessFormProps) {
+function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFormProps) {
   return (
-    <>
-      {/* Headline */}
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-light text-[var(--color-foreground)] leading-none tracking-tight text-balance">
-          PRIVATE
-          <br />
-          ACCESS
-        </h1>
-        <p className="font-sans text-xs leading-relaxed text-[var(--color-muted)] tracking-widest uppercase mt-2">
-          Launching soon.
-        </p>
-        <p className="font-sans text-sm leading-relaxed text-[var(--color-muted)] max-w-xs text-balance">
-          Access reserved for early collectors.
-        </p>
-      </div>
-
-      {/* Form */}
-      <form
-        onSubmit={onSubmit}
-        className="w-full flex flex-col gap-4"
-        noValidate
+    <form
+      onSubmit={onSubmit}
+      className="flex flex-col gap-4 w-full max-w-xs"
+      noValidate
+    >
+      <label
+        htmlFor="email"
+        className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-muted)]"
       >
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className="sr-only">
-            Email address
-          </label>
+        Register interest
+      </label>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-0 border-b border-[var(--color-border)]">
           <input
             id="email"
             type="email"
             name="email"
             autoComplete="email"
-            placeholder="Your email address"
+            placeholder="email address"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
             disabled={loading}
             aria-describedby={error ? "email-error" : undefined}
             aria-invalid={!!error}
             className="
-              w-full bg-transparent border-b border-[var(--color-border)]
-              text-[var(--color-foreground)] font-sans text-sm
-              py-3 px-0 placeholder:text-[var(--color-muted)]
-              focus:outline-none focus:border-[var(--color-muted)]
-              transition-colors duration-200
+              flex-1 bg-transparent
+              font-sans text-xs text-[var(--color-foreground)]
+              placeholder:text-[var(--color-muted)]
+              py-2 pr-4
+              focus:outline-none
               disabled:opacity-40
             "
           />
-          {error && (
-            <p
-              id="email-error"
-              role="alert"
-              className="text-[10px] tracking-wide text-[var(--color-muted)] mt-1"
-            >
-              {error}
-            </p>
-          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="
+              font-sans text-[10px] tracking-[0.25em] uppercase
+              text-[var(--color-foreground)] whitespace-nowrap
+              pb-2 hover:opacity-50 active:opacity-30
+              transition-opacity duration-150
+              disabled:opacity-30 disabled:cursor-not-allowed
+              focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-foreground)]
+            "
+          >
+            {loading ? "—" : "Request →"}
+          </button>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="
-            w-full bg-[var(--color-foreground)] text-[var(--color-background)]
-            font-sans text-xs tracking-[0.25em] uppercase
-            py-4 px-6
-            transition-opacity duration-200
-            hover:opacity-80 active:opacity-60
-            disabled:opacity-40 disabled:cursor-not-allowed
-            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-foreground)]
-          "
-        >
-          {loading ? "Requesting..." : "Request Access \u2192"}
-        </button>
-      </form>
-
-      {/* Micro text */}
-      <p className="font-sans text-[10px] tracking-[0.2em] text-[var(--color-muted)] uppercase">
-        Limited access — invitations prioritized
-      </p>
-    </>
+        {error && (
+          <p
+            id="email-error"
+            role="alert"
+            className="font-sans text-[10px] tracking-wide text-[var(--color-muted)]"
+          >
+            {error}
+          </p>
+        )}
+      </div>
+    </form>
   )
 }
