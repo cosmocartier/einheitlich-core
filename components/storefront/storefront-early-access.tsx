@@ -48,14 +48,8 @@ export function StorefrontEarlyAccess({
       {/* ── Viewport grid ── */}
       <div className="min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
 
-        {/* TOP ROW — brand + status */}
-        <header className="flex items-start justify-between">
-          <span
-            className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
-            aria-label="Private Access"
-          >
-            Register Interest
-          </span>
+        {/* TOP ROW — brand centred */}
+        <header className="flex items-start justify-center">
           <span
             className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
             aria-label={`Storefront: ${storefrontName}`}
@@ -80,15 +74,10 @@ export function StorefrontEarlyAccess({
         </div>
 
         {/* BOTTOM ROW — descriptor */}
-        <footer className="flex justify-end">
-          <div className="flex flex-col gap-1 items-end text-right">
-            <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
-              Early collectors only
-            </p>
-            <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
-              Invitations issued privately
-            </p>
-          </div>
+        <footer className="flex justify-center">
+          <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
+            Invitations issued privately
+          </p>
         </footer>
       </div>
     </main>
@@ -129,7 +118,7 @@ function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFo
         htmlFor="email"
         className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-muted)]"
       >
-        Private Access
+        Register Interest
       </label>
 
       <div className="flex flex-col gap-2">
