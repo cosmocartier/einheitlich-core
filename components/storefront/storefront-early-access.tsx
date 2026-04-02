@@ -45,8 +45,8 @@ export function StorefrontEarlyAccess({
   return (
     <main className="relative min-h-screen w-full bg-[var(--color-background)]">
 
-      {/* Brand name — pinned ~20% from the top, centred horizontally */}
-      <header className="absolute left-0 right-0 top-[20vh] flex justify-center">
+      {/* Brand name — same margin from top as footer has from bottom */}
+      <header className="absolute left-0 right-0 top-8 flex justify-center">
         <span
           className="font-sans text-[12px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
           aria-label={`Storefront: ${storefrontName}`}
