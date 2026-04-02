@@ -43,43 +43,40 @@ export function StorefrontEarlyAccess({
   }
 
   return (
-    <main className="min-h-screen w-full bg-[var(--color-background)]">
+    <main className="relative min-h-screen w-full bg-[var(--color-background)]">
 
-      {/* ── Viewport grid ── */}
-      <div className="min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
+      {/* Brand name — pinned ~20% from the top, centred horizontally */}
+      <header className="absolute left-0 right-0 top-[20vh] flex justify-center">
+        <span
+          className="font-sans text-[12px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
+          aria-label={`Storefront: ${storefrontName}`}
+        >
+          {storefrontName}
+        </span>
+      </header>
 
-        {/* TOP ROW — brand centred */}
-        <header className="flex items-start justify-center pt-6">
-          <span
-            className="font-sans text-[12px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
-            aria-label={`Storefront: ${storefrontName}`}
-          >
-            {storefrontName}
-          </span>
-        </header>
-
-        {/* MIDDLE — form centred both axes */}
-        <div className="flex-1 flex items-center justify-center">
-          {submitted ? (
-            <SuccessState />
-          ) : (
-            <AccessForm
-              email={email}
-              error={error}
-              loading={loading}
-              onEmailChange={setEmail}
-              onSubmit={handleSubmit}
-            />
-          )}
-        </div>
-
-        {/* BOTTOM ROW — descriptor */}
-        <footer className="flex justify-center">
-          <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
-            Invitations issued privately
-          </p>
-        </footer>
+      {/* Form — true viewport centre */}
+      <div className="min-h-screen flex items-center justify-center px-8">
+        {submitted ? (
+          <SuccessState />
+        ) : (
+          <AccessForm
+            email={email}
+            error={error}
+            loading={loading}
+            onEmailChange={setEmail}
+            onSubmit={handleSubmit}
+          />
+        )}
       </div>
+
+      {/* Footer — pinned to bottom, centred */}
+      <footer className="absolute bottom-8 left-0 right-0 flex justify-center">
+        <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
+          Invitations issued privately
+        </p>
+      </footer>
+
     </main>
   )
 }
