@@ -106,7 +106,7 @@ function AccessForm({
     <>
       {/* Headline */}
       <div className="flex flex-col items-center gap-4">
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl font-light text-[var(--color-foreground)] leading-none tracking-tight text-balance">
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl text-[var(--color-foreground)] leading-none tracking-tight text-balance">
           PRIVATE
           <br />
           ACCESS
