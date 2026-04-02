@@ -118,7 +118,7 @@ function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFo
         htmlFor="email"
         className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-muted)]"
       >
-        Register Interest
+        Private Access
       </label>
 
       <div className="flex flex-col gap-2">
