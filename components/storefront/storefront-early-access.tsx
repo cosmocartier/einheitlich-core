@@ -54,7 +54,7 @@ export function StorefrontEarlyAccess({
             className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
             aria-label="Private Access"
           >
-            Private Access
+            Register Interest
           </span>
           <span
             className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
@@ -129,7 +129,7 @@ function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFo
         htmlFor="email"
         className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-muted)]"
       >
-        Register interest
+        Private Access
       </label>
 
       <div className="flex flex-col gap-2">
