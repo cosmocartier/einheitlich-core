@@ -64,16 +64,8 @@ export function StorefrontEarlyAccess({
           </span>
         </header>
 
-        {/* MIDDLE — large display headline, full width */}
-        <div className="flex-1 flex items-center">
-          <h1 className="font-display text-[clamp(4.5rem,14vw,14rem)] leading-[0.9] tracking-tight text-[var(--color-foreground)] select-none pointer-events-none">
-            {storefrontName}
-          </h1>
-        </div>
-
-        {/* BOTTOM ROW — form left, descriptor right */}
-        <footer className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
+        {/* MIDDLE — form centred both axes */}
+        <div className="flex-1 flex items-center justify-center">
           {submitted ? (
             <SuccessState />
           ) : (
@@ -85,9 +77,11 @@ export function StorefrontEarlyAccess({
               onSubmit={handleSubmit}
             />
           )}
+        </div>
 
-          {/* Right-aligned descriptor block */}
-          <div className="flex flex-col gap-1 md:items-end md:text-right shrink-0">
+        {/* BOTTOM ROW — descriptor */}
+        <footer className="flex justify-end">
+          <div className="flex flex-col gap-1 items-end text-right">
             <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
               Early collectors only
             </p>
@@ -95,7 +89,6 @@ export function StorefrontEarlyAccess({
               Invitations issued privately
             </p>
           </div>
-
         </footer>
       </div>
     </main>
