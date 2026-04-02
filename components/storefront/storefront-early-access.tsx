@@ -49,9 +49,9 @@ export function StorefrontEarlyAccess({
       <div className="min-h-screen flex flex-col justify-between p-8 md:p-12 lg:p-16">
 
         {/* TOP ROW — brand centred */}
-        <header className="flex items-start justify-center">
+        <header className="flex items-start justify-center pt-6">
           <span
-            className="font-sans text-[10px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
+            className="font-sans text-[12px] tracking-[0.3em] uppercase text-[var(--color-foreground)] opacity-90"
             aria-label={`Storefront: ${storefrontName}`}
           >
             {storefrontName}
