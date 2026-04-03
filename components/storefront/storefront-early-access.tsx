@@ -73,7 +73,7 @@ export function StorefrontEarlyAccess({
       {/* Footer — pinned to bottom, centred */}
       <footer className="absolute bottom-8 left-0 right-0 flex justify-center">
         <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-[var(--color-muted)]">
-          Invitations issued privately
+          By invitation only
         </p>
       </footer>
 
