@@ -15,6 +15,7 @@ export async function subscribeToNewsletter(
   email: string,
   storefrontId: string,
   source = "early_access",
+  operatorDistributorId?: string,
 ): Promise<SubscribeResult> {
   const trimmed = email.trim().toLowerCase()
 
@@ -29,6 +30,7 @@ export async function subscribeToNewsletter(
     {
       email: trimmed,
       storefront_id: storefrontId,
+      operator_distributor_id: operatorDistributorId ?? null,
       source,
       status: "active",
     },
