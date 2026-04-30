@@ -6,17 +6,22 @@
 -- subscribers from different storefronts are cleanly separated.
 
 create table if not exists public.newsletter_subscribers (
-  id             uuid primary key default gen_random_uuid(),
-  email          text not null,
-  storefront_id  uuid not null references public.storefronts(id) on delete cascade,
-  source         text not null default 'early_access',  -- which form/channel collected this
-  status         text not null default 'active',        -- active | unsubscribed
-  created_at     timestamp with time zone not null default now(),
-  updated_at     timestamp with time zone not null default now(),
+  id                       uuid primary key default gen_random_uuid(),
+  email                    text not null,
+  storefront_id            uuid not null references public.storefronts(id) on delete cascade,
+  operator_distributor_id  uuid references public.operator_distributors(id) on delete set null,
+  source                   text not null default 'early_access',  -- which form/channel collected this
+  status                   text not null default 'active',        -- active | unsubscribed
+  created_at               timestamp with time zone not null default now(),
+  updated_at               timestamp with time zone not null default now(),
 
   -- prevent duplicate signups per storefront
   constraint newsletter_subscribers_email_storefront_unique unique (email, storefront_id)
 );
+
+-- fast lookups filtered by operator/distributor
+create index if not exists newsletter_subscribers_operator_distributor_id_idx
+  on public.newsletter_subscribers (operator_distributor_id);
 
 -- fast lookups filtered by storefront
 create index if not exists newsletter_subscribers_storefront_id_idx
