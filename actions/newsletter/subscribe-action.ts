@@ -13,15 +13,21 @@ export type SubscribeResult =
  */
 export async function subscribeToNewsletter(
   email: string,
+  phone: string,
   storefrontId: string,
   source = "early_access",
   operatorDistributorId?: string,
 ): Promise<SubscribeResult> {
   const trimmed = email.trim().toLowerCase()
+  const trimmedPhone = phone.trim()
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(trimmed)) {
     return { success: false, error: "Invalid email address." }
+  }
+
+  if (!/^[+\d][\d\s().-]{6,24}$/.test(trimmedPhone)) {
+    return { success: false, error: "Invalid phone number." }
   }
 
   const supabase = await createClient()
@@ -29,6 +35,7 @@ export async function subscribeToNewsletter(
   const { error } = await supabase.from("newsletter_subscribers").upsert(
     {
       email: trimmed,
+      phone: trimmedPhone,
       storefront_id: storefrontId,
       operator_distributor_id: operatorDistributorId ?? null,
       source,

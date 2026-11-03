@@ -6,8 +6,8 @@ import type { SubscribeResult } from "@/actions/newsletter/subscribe-action"
 export interface StorefrontEarlyAccessProps {
   storefrontName: string
   theme?: "minimal"
-  /** Server action bound with the storefront's ID — receives only the email. */
-  onSubscribe: (email: string) => Promise<SubscribeResult>
+  /** Server action bound with the storefront's IDs — receives email and phone. */
+  onSubscribe: (email: string, phone: string) => Promise<SubscribeResult>
 }
 
 export function StorefrontEarlyAccess({
@@ -15,6 +15,7 @@ export function StorefrontEarlyAccess({
   onSubscribe,
 }: StorefrontEarlyAccessProps) {
   const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -31,7 +32,12 @@ export function StorefrontEarlyAccess({
 
     setError("")
     setLoading(true)
-    const result = await onSubscribe(email)
+    if (!phone.trim()) {
+      setError("Enter a phone number.")
+      return
+    }
+
+    const result = await onSubscribe(email, phone)
     setLoading(false)
 
     if (!result.success) {
@@ -62,9 +68,11 @@ export function StorefrontEarlyAccess({
         ) : (
           <AccessForm
             email={email}
+            phone={phone}
             error={error}
             loading={loading}
             onEmailChange={setEmail}
+            onPhoneChange={setPhone}
             onSubmit={handleSubmit}
           />
         )}
@@ -98,13 +106,15 @@ function SuccessState() {
 
 interface AccessFormProps {
   email: string
+  phone: string
   error: string
   loading: boolean
   onEmailChange: (v: string) => void
+  onPhoneChange: (v: string) => void
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFormProps) {
+function AccessForm({ email, phone, error, loading, onEmailChange, onPhoneChange, onSubmit }: AccessFormProps) {
   return (
     <form
       onSubmit={onSubmit}
@@ -118,7 +128,21 @@ function AccessForm({ email, error, loading, onEmailChange, onSubmit }: AccessFo
         Private Access
       </label>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
+        <input
+          id="phone"
+          type="tel"
+          name="phone"
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder="phone number"
+          value={phone}
+          onChange={(e) => onPhoneChange(e.target.value)}
+          disabled={loading}
+          aria-describedby={error ? "email-error" : undefined}
+          className="w-full border-b border-[var(--color-border)] bg-transparent py-2 font-sans text-xs text-[var(--color-foreground)] placeholder:text-[var(--color-muted)] focus:outline-none disabled:opacity-40"
+        />
+
         <div className="flex items-center gap-0 border-b border-[var(--color-border)]">
           <input
             id="email"

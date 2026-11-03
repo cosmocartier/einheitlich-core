@@ -8,6 +8,7 @@
 create table if not exists public.newsletter_subscribers (
   id                       uuid primary key default gen_random_uuid(),
   email                    text not null,
+  phone                    text,
   storefront_id            uuid not null references public.storefronts(id) on delete cascade,
   operator_distributor_id  uuid references public.operator_distributors(id) on delete set null,
   source                   text not null default 'early_access',  -- which form/channel collected this
@@ -30,6 +31,10 @@ create index if not exists newsletter_subscribers_storefront_id_idx
 -- fast lookups by email (e.g. unsubscribe flows)
 create index if not exists newsletter_subscribers_email_idx
   on public.newsletter_subscribers (email);
+
+-- Add phone to an existing newsletter_subscribers table.
+alter table public.newsletter_subscribers
+  add column if not exists phone text;
 
 -- auto-bump updated_at on any row change
 create or replace function public.set_updated_at()

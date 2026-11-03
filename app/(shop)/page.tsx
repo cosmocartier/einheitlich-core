@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 }
 
 export default function EinheitlichPage() {
-  async function subscribe(email: string) {
+  async function subscribe(email: string, phone: string) {
     "use server"
-    return subscribeToNewsletter(email, STOREFRONT_ID, "early_access", OPERATOR_DISTRIBUTOR_ID)
+    return subscribeToNewsletter(email, phone, STOREFRONT_ID, "early_access", OPERATOR_DISTRIBUTOR_ID)
   }
 
   return (
