@@ -45,6 +45,8 @@ begin
 end;
 $$;
 
+drop trigger if exists newsletter_subscribers_set_updated_at on public.newsletter_subscribers;
+
 create trigger newsletter_subscribers_set_updated_at
   before update on public.newsletter_subscribers
   for each row execute procedure public.set_updated_at();
